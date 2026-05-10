@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Mother's Day!!!</title>
+    <style>
+        body {
+            background-color: #fff5f7;
+            text-align: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden; 
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #startBtn {
+            padding: 25px 60px;
+            font-size: 30px;
+            background: #ff0054;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 0, 84, 0.4);
+            z-index: 100;
+            font-weight: bold;
+            outline: none;
+            transition: transform 0.1s;
+        }
+
+        #startBtn:active {
+            transform: scale(0.95);
+        }
+
+        #message {
+            display: none;
+            color: #ff0054;
+            font-size: 5rem;
+            margin: 0;
+            padding: 20px;
+            font-weight: 900;
+            line-height: 1.2;
+            z-index: 10;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -150px; 
+            font-size: 60px;
+            user-select: none;
+            animation: riseToSky 5s forwards linear; 
+        }
+
+        #table-area {
+            position: absolute;
+            bottom: -400px;
+            width: 100%;
+            transition: bottom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .table {
+            width: 300px;
+            height: 120px;
+            background: #5d2e0a;
+            margin: 0 auto;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .cake { font-size: 100px; margin-bottom: -20px; }
+
+        @keyframes riseToSky {
+            0% { bottom: -150px; opacity: 0; }
+            10% { opacity: 1; }
+            100% { bottom: 120vh; opacity: 1; transform: translateX(30px); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="message">Happy Mother's Day!!! ❤️</h1>
+    
+    <button id="startBtn">Click Me!</button>
+
+    <div id="table-area">
+        <div class="cake">🎂</div>
+        <div class="table"></div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('startBtn');
+        const table = document.getElementById('table-area');
+        const msgText = document.getElementById('message');
+        let surpriseStarted = false;
+
+        // The Main Function
+        function startSurprise() {
+            if (surpriseStarted) return; 
+            surpriseStarted = true;
+
+            btn.style.display = 'none';
+            msgText.style.display = 'block';
+            
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance("Happy Mother's Day! You are the best!");
+            utterThis.pitch = 1.4; 
+            utterThis.rate = 1.0; 
+            synth.speak(utterThis);
+
+            for(let i = 0; i < 50; i++) {
+                setTimeout(createBalloon, i * 100);
+            }
+
+            setTimeout(() => {
+                table.style.bottom = "0px";
+            }, 3000); 
+        }
+
+        // 1. Handle the Mouse Click
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            startSurprise();
+        });
+
+        // 2. Handle the Enter Key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Enter") {
+                startSurprise();
+            }
+        });
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            const items = ['🎈', '🎈', '💖', '✨'];
+            balloon.innerHTML = items[Math.floor(Math.random() * items.length)];
+            balloon.style.left = Math.random() * 90 + 'vw';
+            const hue = Math.floor(Math.random() * 360);
+            balloon.style.filter = `hue-rotate(${hue}deg)`;
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 6000);
+        }
+    </script>
+</body>
+</html>
